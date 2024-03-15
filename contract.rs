@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use near_sdk::{
     borsh::{self, BorshDeserialize, BorshSerialize},
-    env, near_bindgen, AccountId, Balance, PanicOnDefault, Promise,
+    env, near_bindgen, AccountId, Balance, PanicOnDefault,
 };
 
 #[global_allocator]
@@ -35,5 +35,9 @@ impl Token {
         // Perform the transfer
         self.balances.insert(sender_id.clone(), sender_balance - amount);
         *self.balances.entry(receiver_id.clone()).or_insert(0) += amount;
+    }
+
+    pub fn get_balance(&self, account_id: AccountId) -> Balance {
+        *self.balances.get(&account_id).unwrap_or(&0)
     }
 }
